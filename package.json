@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,5 +16,8 @@
     "cheerio": "^1.1.2",
     "express": "^5.1.0",
     "puppeteer": "^24.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
