@@ -18,6 +18,11 @@
     "puppeteer": "^24.16.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@types/cheerio": "^0.22.35",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }

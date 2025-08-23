@@ -1,4 +1,4 @@
-export function transformSetName(setName) {
+export default function transformSetName(setName: string): string {
   return setName
     .toLowerCase()
     .replace(/'/g, '')

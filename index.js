@@ -1,6 +1,6 @@
 import express from 'express';
 import axios from 'axios';
-import { scrapeCollectorBoosterIds } from './utils/scraper.js';
+import scrapeCollectorBoosterId from './utils/scraper.js';
 
 const app = express();
 const PORT = 3000;
@@ -33,20 +33,20 @@ app.get('/', (req, res) => {
 // First click of a collector booster display image on the front-end passes in the set name and the product id is scraped so that an api call to TCGPlayer can be made to obtain price data.
 app.get('/search/:setName', async (req, res) => {
   const { setName } = req.params;
-  console.log(`Searching for collector booster boxes in set: ${setName}`);
+  console.log(
+    `Searching TCGPlayer for the collector booster box product ID with the following set name: ${setName}`
+  );
 
-  const productIds = await scrapeCollectorBoosterIds(setName);
+  const productId = await scrapeCollectorBoosterId(setName);
 
-  // Fetch price history for the first product ID (assuming single collector booster per set)
+  // Fetch price history using the product id
   let priceHistory = null;
-  if (productIds.length > 0) {
-    priceHistory = await fetchPriceHistory(productIds[0], 'quarter');
-  }
+  priceHistory = await fetchPriceHistory(productId);
 
   res.json({
     setName,
-    collectorBoosterIds: productIds,
-    count: productIds.length,
+    productId,
+    collectorBoosterIds: productId,
     priceHistory: priceHistory,
   });
 });
