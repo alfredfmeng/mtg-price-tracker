@@ -2,10 +2,16 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import axios from 'axios';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import scrapeCollectorBoosterId from './utils/scraper.js';
 
 const app = express();
 const PORT = 3000;
+
+// Get directory path for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configure CORS to allow frontend requests
 app.use(cors({
@@ -84,6 +90,16 @@ app.get('/price-history/:productId', async (req: Request, res: Response) => {
     priceHistory,
   });
 });
+
+// Serve static files from frontend build (production only)
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  
+  // Catch-all handler for React routing
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
