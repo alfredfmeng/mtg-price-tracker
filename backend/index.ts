@@ -87,15 +87,19 @@ app.get('/price-history/:productId', async (req: Request, res: Response) => {
   });
 });
 
-// Serve static files from frontend build (production only)
+// Serve static files from frontend build (CSS, JS, images)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
-  
-  // Catch-all handler for React routing
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  });
 }
+
+// Serve React app on root route
+app.get('/', (req: Request, res: Response) => {
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  } else {
+    res.send('Development server - frontend runs on port 5173');
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
