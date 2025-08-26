@@ -66,18 +66,14 @@ function App() {
       </div>
 
       <div className="charts-container">
-        {selectedSets.length === 0 ? (
-          <p>Add some MTG sets to see their price charts!</p>
-        ) : (
-          selectedSets.map(set => (
-            <PriceChart
-              key={set}
-              setName={set}
-              range={setRanges[set] || 'quarter'}
-              onRangeChange={(range) => handleRangeChange(set, range)}
-            />
-          ))
-        )}
+        {selectedSets.map(set => (
+          <PriceChart
+            key={set}
+            setName={set}
+            range={setRanges[set] || 'quarter'}
+            onRangeChange={(range) => handleRangeChange(set, range)}
+          />
+        ))}
       </div>
     </div>
   )

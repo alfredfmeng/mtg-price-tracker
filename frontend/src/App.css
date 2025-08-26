@@ -19,7 +19,9 @@ header h1 {
   background: #f5f5f5;
   padding: 1.5rem;
   border-radius: 8px;
-  margin-bottom: 2rem;
+  /*margin-bottom: 2rem;*/
+  max-width: 60%;
+  margin: 0 auto;
 }
 
 .set-selector h2 {
@@ -30,7 +32,6 @@ header h1 {
 .input-group {
   display: flex;
   gap: 1rem;
-  align-items: center;
 }
 
 .input-group input {
@@ -100,7 +101,7 @@ header h1 {
 
 .charts-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
   gap: 2rem;
 }
 
@@ -133,7 +134,6 @@ header h1 {
   padding: 1.5rem;
   background: white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  max-width: 50%;
 }
 
 .chart-header {
@@ -178,6 +178,6 @@ header h1 {
 
 .chart-container {
   position: relative;
-  height: 400px;
+  height: 500px;
   width: 100%;
 }

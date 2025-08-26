@@ -1,9 +1,18 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import axios from 'axios';
-import scrapeCollectorBoosterId from './utils/scraper.js';
+import cors from 'cors';
+import scrapeCollectorBoosterId from './utils/scraper.ts';
 
 const app = express();
 const PORT = 3000;
+
+// Configure CORS to allow frontend requests
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.FRONTEND_URL || 'https://your-production-domain.com'
+    : 'http://localhost:5173'
+}));
 
 type PriceRange = 'month' | 'quarter' | 'semi-annual' | 'annual';
 
@@ -56,7 +65,6 @@ app.get('/search/:setName', async (req: Request, res: Response) => {
   res.json({
     setName,
     productId,
-    collectorBoosterIds: productId,
     priceHistory: priceHistory,
   });
 });

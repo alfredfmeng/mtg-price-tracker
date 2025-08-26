@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
-import transformSetName from './setNameUtils.js';
+import transformSetName from './setNameUtils.ts';
 
 export default async function scrapeCollectorBoosterId(setName: string): Promise<string | undefined> {
   const browser = await puppeteer.launch();
@@ -38,6 +38,8 @@ export default async function scrapeCollectorBoosterId(setName: string): Promise
       const productId = href.match(/\/product\/(\d+)\//)?.[1];
       if (productId) productIds.push(productId);
     });
+    
+    console.log(`Product ID for ${setName}: ${productIds[0]}`)
 
     return productIds[0];
   } catch (error: unknown) {
