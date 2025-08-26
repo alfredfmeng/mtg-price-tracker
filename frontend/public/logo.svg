@@ -1,0 +1,15 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark background -->
+  <circle cx="16" cy="16" r="15" fill="#1a1a1a"/>
+  
+  <!-- Five mana colors at pentagon points -->
+  <circle cx="16" cy="4" r="4" fill="#FFFBD5"/>    <!-- White (top) -->
+  <circle cx="27" cy="12" r="4" fill="#0E68AB"/>    <!-- Blue (top right) -->
+  <circle cx="22" cy="25" r="4" fill="#150B00" stroke="#ffffffff" stroke-width="0.5"/>    <!-- Black (bottom right) -->
+  <circle cx="10" cy="25" r="4" fill="#D3202A"/>    <!-- Red (bottom left) -->
+  <circle cx="5" cy="12" r="4" fill="#00733E"/>     <!-- Green (top left) -->
+  
+  <!-- Dollar sign in center -->
+  <text x="16" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
+        fill="#FFD700" text-anchor="middle">$</text>
+</svg>
