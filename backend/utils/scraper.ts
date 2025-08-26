@@ -23,10 +23,29 @@ export default async function scrapeCollectorBoosterId(setName: string): Promise
     console.log(`Scraping: ${searchUrl}`);
 
     // Navigate to the page
-    await page.goto(searchUrl);
+    console.log('Navigating to page...');
+    const response = await page.goto(searchUrl, { waitUntil: 'networkidle0' });
+    console.log('Page response status:', response?.status());
+    
+    // Check if we got blocked/redirected
+    const currentUrl = page.url();
+    console.log('Current URL after navigation:', currentUrl);
+    
+    // Log page title to see what we actually got
+    const title = await page.title();
+    console.log('Page title:', title);
 
     // Wait for products to load
-    await page.waitForSelector('.search-results', { timeout: 10000 });
+    console.log('Waiting for .search-results selector...');
+    try {
+      await page.waitForSelector('.search-results', { timeout: 15000 });
+      console.log('Found .search-results successfully');
+    } catch (error) {
+      console.log('Failed to find .search-results, checking page content...');
+      const bodyText = await page.evaluate(() => document.body.innerText.substring(0, 200));
+      console.log('Page content preview:', bodyText);
+      throw error;
+    }
 
     // Get the page HTML
     const html = await page.content();
