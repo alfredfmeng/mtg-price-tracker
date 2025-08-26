@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="dashboard">
       <header>
-        <h1>MTG Collector Booster Price Tracker</h1>
+        <h1>MTG Collector Booster Display Price Tracker</h1>
       </header>
 
       <div className="set-selector">
