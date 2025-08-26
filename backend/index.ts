@@ -88,11 +88,11 @@ app.get('/price-history/:productId', async (req: Request, res: Response) => {
 });
 
 // Serve static files from frontend build (CSS, JS, images)
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 
 // Serve React app on root route
 app.get('/', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
 app.listen(PORT, () => {
