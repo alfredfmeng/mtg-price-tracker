@@ -43,10 +43,6 @@ async function fetchPriceHistory(productId: string, range: PriceRange = 'quarter
   }
 }
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('hello world');
-});
-
 // First click of a collector booster display image on the front-end passes in the set name and the product id is scraped so that an api call to TCGPlayer can be made to obtain price data.
 app.get('/search/:setName', async (req: Request, res: Response) => {
   const { setName } = req.params;
