@@ -2,7 +2,7 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import axios from 'axios';
 import cors from 'cors';
-import scrapeCollectorBoosterId from './utils/scraper.ts';
+import scrapeCollectorBoosterId from './utils/scraper.js';
 
 const app = express();
 const PORT = 3000;

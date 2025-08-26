@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import * as cheerio from 'cheerio';
-import transformSetName from './setNameUtils.ts';
+import transformSetName from './setNameUtils.js';
 
 export default async function scrapeCollectorBoosterId(setName: string): Promise<string | undefined> {
   const browser = await puppeteer.launch({
