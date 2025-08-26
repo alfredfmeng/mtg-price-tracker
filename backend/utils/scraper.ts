@@ -3,7 +3,14 @@ import * as cheerio from 'cheerio';
 import transformSetName from './setNameUtils.ts';
 
 export default async function scrapeCollectorBoosterId(setName: string): Promise<string | undefined> {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage'
+  ]
+  });
 
   try {
     const page = await browser.newPage();
