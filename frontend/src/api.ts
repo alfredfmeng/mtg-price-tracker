@@ -49,9 +49,7 @@ export const api = {
   // Search for MTG set and get initial price data
   async searchSet(setName: string): Promise<PriceHistoryResponse> {
     try {
-      console.log(`Fetching the following set from the frontend: ${setName}`)
       const response = await axios.get(`${API_BASE_URL}/search/${encodeURIComponent(setName)}`);
-      console.log(`Fetching successful. Data: ${JSON.stringify(response.data)}`)
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -139,7 +139,10 @@ export default function PriceChart({ setName, range, onRangeChange }: PriceChart
         <div className="chart-header">
           <h4>{setName} Price Chart</h4>
         </div>
-        <div className="loading">Loading price data...</div>
+        <div className="loading">
+          <div className="loading-spinner"></div>
+          Loading price data...
+        </div>
       </div>
     )
   }
@@ -148,7 +151,7 @@ export default function PriceChart({ setName, range, onRangeChange }: PriceChart
     return (
       <div className="price-chart">
         <div className="chart-header">
-          <h4>{setName} Price Chart</h4>
+          <h4>{setName} Collector Booster Display</h4>
         </div>
         <div className="error">Error: {error}</div>
       </div>
