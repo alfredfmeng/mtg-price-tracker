@@ -40,7 +40,7 @@ function App() {
         <div className="input-group">
           <input
             type="text"
-            placeholder="Enter MTG set name (e.g., 'Foundations', 'Wilds of Eldraine')"
+            placeholder="Enter set name (e.g., 'Foundations', 'Wilds of Eldraine')"
             value={currentSet}
             onChange={(e) => setCurrentSet(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAddSet()}
