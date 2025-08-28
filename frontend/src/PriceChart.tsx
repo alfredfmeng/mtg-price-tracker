@@ -161,7 +161,7 @@ export default function PriceChart({ setName, range, onRangeChange }: PriceChart
   return (
     <div className="price-chart">
       <div className="chart-header">
-        <h4>{setName} Price Chart</h4>
+        <h4>{setName} Collector Booster Display Market Price History</h4>
         <div className="range-selector">
           {ranges.map(rangeOption => (
             <button
