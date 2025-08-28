@@ -43,6 +43,18 @@ async function fetchPriceHistory(productId: string, range: PriceRange = 'quarter
   }
 }
 
+// Serve static files from frontend build (CSS, JS, images)
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+
+// Serve React app on root route
+  app.get('/', (req: Request, res: Response) => {
+    if (process.env.NODE_ENV === 'production') {
+      res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+    } else {
+      res.send('Development mode - run frontend separately on port 5173');
+    }
+  });
+
 // First click of a collector booster display image on the front-end passes in the set name and the product id is scraped so that an api call to TCGPlayer can be made to obtain price data.
 app.get('/search/:setName', async (req: Request, res: Response) => {
   const { setName } = req.params;
@@ -85,14 +97,6 @@ app.get('/price-history/:productId', async (req: Request, res: Response) => {
     range: validRange,
     priceHistory,
   });
-});
-
-// Serve static files from frontend build (CSS, JS, images)
-app.use(express.static(path.join(__dirname, '../../frontend/dist')));
-
-// Serve React app on root route
-app.get('/', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
 app.listen(PORT, () => {
