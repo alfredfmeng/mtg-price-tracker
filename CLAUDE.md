@@ -326,7 +326,7 @@ npm run preview     # Preview production build
    - Global buttons should update all charts to display the selected time range
    - Implementation would involve adding global state to App component and handler to update all chart ranges at once
 
-2. **Persistent Dashboard State (localStorage)**
+2. **Persistent Dashboard State (localStorage) - IN PROGRESS**
    - **Use Case**: Personal inventory tracker - save selected sets between browser sessions
    - **Data Stored**: Set name, product ID, and time range preferences in browser localStorage
    - **Benefits**: Fast startup (skip 30-second scraping for known sets), persistent user dashboard
@@ -334,6 +334,14 @@ npm run preview     # Preview production build
    - **Storage Format**: `{selectedSets: [{name, productId, range}, ...]}`
    - **Reliability**: High - product IDs rarely change, falls back to scraping if needed
    - **Scope**: Single-user, browser-specific persistence
+   - **Storage Size**: ~300-400 bytes for 5 sets (negligible impact on 5-10MB localStorage limit)
+   
+   **Implementation Discussion Notes:**
+   - **localStorage vs Database**: localStorage perfect for single-user, cross-device sync would require database + auth
+   - **Race Conditions**: Multiple tabs can overwrite each other's saves, storage event listeners can sync tabs
+   - **Error Scenarios**: Corrupted JSON, quota exceeded, browser restrictions, data structure changes
+   - **TypeScript Pattern**: Use arrow functions for utilities, function declarations for components
+   - **Data Migration**: Version field enables future schema changes without breaking existing data
 
 3. **Advanced Caching System (SQLite + In-Memory) - Future Consideration**
    - **Use Case**: Multi-user deployment - pre-scrape all 46 collector booster display sets
@@ -382,3 +390,23 @@ npm run preview     # Preview production build
 - CORS configured for production environment variables
 - Error handling covers edge cases and network failures
 - Loading states provide good UX during scraping operations
+
+## localStorage Implementation Outline
+
+### Implementation Steps (Declarative)
+1. **Define TypeScript Interfaces** - Create StoredSet and DashboardState interfaces with version field
+2. **Create Storage Utility Functions** - Build save, load, and clear functions with error handling
+3. **Update App.tsx State Management** - Change selectedSets from string[] to StoredSet[], add useEffects
+4. **Modify Set Addition Logic** - Update addSet to create StoredSet objects, handle missing productId
+5. **Update PriceChart Component Interface** - Accept optional productId prop, skip search if available
+6. **Modify Set Removal Logic** - Update removeSet to work with StoredSet objects
+7. **Update Range Change Handling** - Modify range changes to update StoredSet objects
+8. **Add Error Handling** - Handle localStorage failures, corrupted data, quota exceeded
+9. **Test Edge Cases** - Test empty storage, partial data, persistence, invalid JSON
+
+### Key Implementation Points
+- **Data Structure**: `{selectedSets: [{name, productId, range}], version: "1.0"}`
+- **Performance Benefits**: Skip 30-second scraping for cached sets, instant loading (~1ms vs ~30s)
+- **Error Resilience**: Graceful fallback to empty state, try-catch around JSON operations
+- **Multi-tab Sync**: Optional storage event listeners to sync between tabs
+- **Future Migration**: Version field enables data structure updates without breaking changes

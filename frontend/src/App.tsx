@@ -15,14 +15,14 @@ interface DashboardState {
   version: string
 }
 
-const saveDashboardState = (sets: StoredSet[]) => {
-  const state: DashboardState = { selectedSets: sets, version: "1.0" }
-  localStorage.setItem('dashboardState', JSON.stringify(state))
-}
+// const saveDashboardState = (sets: StoredSet[]) => {
+//   const state: DashboardState = { selectedSets: sets, version: "1.0" }
+//   localStorage.setItem('dashboardState', JSON.stringify(state))
+// }
 
-const loadDashboardState = (): StoredSet[] => {
-  localStorage.getItem('dashboardState')
-}
+// const loadDashboardState = (): StoredSet[] => {
+//   localStorage.getItem('dashboardState')
+// }
 
 function App() {
   const [selectedSets, setSelectedSets] = useState<string[]>([])
