@@ -326,6 +326,27 @@ npm run preview     # Preview production build
    - Global buttons should update all charts to display the selected time range
    - Implementation would involve adding global state to App component and handler to update all chart ranges at once
 
+2. **Persistent Dashboard State (localStorage)**
+   - **Use Case**: Personal inventory tracker - save selected sets between browser sessions
+   - **Data Stored**: Set name, product ID, and time range preferences in browser localStorage
+   - **Benefits**: Fast startup (skip 30-second scraping for known sets), persistent user dashboard
+   - **Implementation**: Save on set add/remove, restore on app load
+   - **Storage Format**: `{selectedSets: [{name, productId, range}, ...]}`
+   - **Reliability**: High - product IDs rarely change, falls back to scraping if needed
+   - **Scope**: Single-user, browser-specific persistence
+
+3. **Advanced Caching System (SQLite + In-Memory) - Future Consideration**
+   - **Use Case**: Multi-user deployment - pre-scrape all 46 collector booster display sets
+   - **Architecture**: Hybrid SQLite database + in-memory cache for optimal performance
+   - **Database Schema**: Sets table with name, product_id, created_at, updated_at
+   - **Performance**: Cache hits ~1ms, SQLite queries ~5ms, scraping fallback ~30s
+   - **Benefits**: Universal product ID storage, cross-user sharing, survives deployments
+   - **Implementation Strategy**: 
+     - Phase 1: Pre-scrape 46 existing sets (spread over days to avoid rate limiting)
+     - Phase 2: Add 4-6 new sets annually as released
+     - Phase 3: Scheduled re-scraping for data freshness
+   - **When to Consider**: If distributing app to multiple users or building comprehensive MTG data service
+
 ### 📋 Architecture Decisions & Design Choices
 
 **Backend Architecture:**
