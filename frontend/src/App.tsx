@@ -4,6 +4,26 @@ import PriceChart from './PriceChart'
 
 type PriceRange = 'month' | 'quarter' | 'semi-annual' | 'annual'
 
+interface StoredSet {
+  name: string,
+  productId: string,
+  range: PriceRange
+}
+
+interface DashboardState {
+  selectedSets: StoredSet[],
+  version: string
+}
+
+const saveDashboardState = (sets: StoredSet[]) => {
+  const state: DashboardState = { selectedSets: sets, version: "1.0" }
+  localStorage.setItem('dashboardState', JSON.stringify(state))
+}
+
+const loadDashboardState = (): StoredSet[] => {
+  localStorage.getItem('dashboardState')
+}
+
 function App() {
   const [selectedSets, setSelectedSets] = useState<string[]>([])
   const [currentSet, setCurrentSet] = useState('')
