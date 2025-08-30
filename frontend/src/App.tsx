@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import PriceChart from './PriceChart'
 
@@ -15,34 +15,57 @@ interface DashboardState {
   version: string
 }
 
-// const saveDashboardState = (sets: StoredSet[]) => {
-//   const state: DashboardState = { selectedSets: sets, version: "1.0" }
-//   localStorage.setItem('dashboardState', JSON.stringify(state))
-// }
+const saveDashboardState = (sets: StoredSet[]) => {
+  try {
+    const state: DashboardState = { selectedSets: sets, version: "1.0" }
+    localStorage.setItem('dashboardState', JSON.stringify(state))
+  } catch (error) {
+    console.error('Failed to save dashboard state:', error)
+  }
+}
 
-// const loadDashboardState = (): StoredSet[] => {
-//   localStorage.getItem('dashboardState')
-// }
+const loadDashboardState = (): DashboardState => {
+  try {
+    const storedState = localStorage.getItem('dashboardState')
+    if (!storedState) return null
+    return JSON.parse(storedState);    
+  } catch (error) {
+    console.error('Failed to load dashboard state:', error)
+  }
+}
+
+const clearDashboardState = () => {
+  try {
+    localStorage.removeItem('dashboardState')
+  } catch (error) {
+    console.error('Failed to clear dashboard state:', error)
+  }
+}
 
 function App() {
-  const [selectedSets, setSelectedSets] = useState<string[]>([])
+  const [selectedSets, setSelectedSets] = useState<StoredSet[]>([])
   const [currentSet, setCurrentSet] = useState('')
-  const [setRanges, setSetRanges] = useState<Record<string, PriceRange>>({})
+
+  useEffect(() => {
+    if (selectedSets.length > 0) {
+      saveDashboardState(selectedSets)
+    }
+  }, [selectedSets])
 
   const handleAddSet = () => {
-    if (currentSet.trim() && !selectedSets.includes(currentSet.trim())) {
-      const newSet = currentSet.trim()
+    if (currentSet.trim() && !selectedSets.some(set => set.name = currentSet.trim())) {
+      const newSet: StoredSet = {
+        name: currentSet.trim(),
+        productId: '',
+        range: 'quarter'
+      }
       setSelectedSets([...selectedSets, newSet])
-      setSetRanges({...setRanges, [newSet]: 'quarter'}) // Default to quarter
       setCurrentSet('')
     }
   }
 
   const handleRemoveSet = (setToRemove: string) => {
-    setSelectedSets(selectedSets.filter(set => set !== setToRemove))
-    const newRanges = {...setRanges}
-    delete newRanges[setToRemove]
-    setSetRanges(newRanges)
+    setSelectedSets(selectedSets.filter(set => set.name !== setToRemove))
   }
 
   const handleRangeChange = (setName: string, range: PriceRange) => {
