@@ -24,13 +24,14 @@ const saveDashboardState = (sets: StoredSet[]) => {
   }
 }
 
-const loadDashboardState = (): DashboardState => {
+const loadDashboardState = (): DashboardState | null => {
   try {
     const storedState = localStorage.getItem('dashboardState')
     if (!storedState) return null
     return JSON.parse(storedState);    
   } catch (error) {
     console.error('Failed to load dashboard state:', error)
+    return null
   }
 }
 
@@ -47,13 +48,20 @@ function App() {
   const [currentSet, setCurrentSet] = useState('')
 
   useEffect(() => {
+    const savedState = loadDashboardState();
+    if (savedState && savedState.version === '1.0') {
+      setSelectedSets(savedState?.selectedSets)
+    }
+  }, [])
+
+  useEffect(() => {
     if (selectedSets.length > 0) {
       saveDashboardState(selectedSets)
     }
   }, [selectedSets])
 
   const handleAddSet = () => {
-    if (currentSet.trim() && !selectedSets.some(set => set.name = currentSet.trim())) {
+    if (currentSet.trim() && !selectedSets.some(set => set.name === currentSet.trim())) {
       const newSet: StoredSet = {
         name: currentSet.trim(),
         productId: '',
@@ -69,7 +77,7 @@ function App() {
   }
 
   const handleRangeChange = (setName: string, range: PriceRange) => {
-    setSetRanges({...setRanges, [setName]: range})
+    setSelectedSets(prev => prev.map(set => set.name === setName ? { ...set, range } : set))
   }
 
   return (
