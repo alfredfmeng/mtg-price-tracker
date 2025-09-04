@@ -27,10 +27,12 @@ ChartJS.register(
 interface PriceChartProps {
   setName: string
   range: PriceRange
+  productId?: string
   onRangeChange: (range: PriceRange) => void
+  onProductIdFound?: (productId: string) => void
 }
 
-export default function PriceChart({ setName, range, onRangeChange }: PriceChartProps) {
+export default function PriceChart({ setName, range, onRangeChange, onProductIdFound }: PriceChartProps) {
   const [priceData, setPriceData] = useState<TCGPlayerPriceHistory | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -42,9 +44,15 @@ export default function PriceChart({ setName, range, onRangeChange }: PriceChart
       setLoading(true)
       setError(null)
       try {
-        const response = await api.searchSet(setName)
-        setProductId(response.productId)
-        setPriceData(response.priceHistory)
+        if (productId) {
+          const response = await api.getPriceHistory(productId, range)
+          setPriceData(response.priceHistory)
+        } else {
+          const response = await api.searchSet(setName)
+          setProductId(response.productId)
+          setPriceData(response.priceHistory)
+          onProductIdFound?.(response.productId)
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch data')
       } finally {
@@ -53,8 +61,9 @@ export default function PriceChart({ setName, range, onRangeChange }: PriceChart
     }
 
     fetchInitialData()
+  
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // Empty dependency array - only runs once on mount
+  }, [productId, range])
 
   // Fetch new data when range changes - productId never changes for this component
   useEffect(() => {

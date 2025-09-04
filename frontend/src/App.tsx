@@ -65,7 +65,7 @@ function App() {
       const newSet: StoredSet = {
         name: currentSet.trim(),
         productId: '',
-        range: 'quarter'
+        range: 'month'
       }
       setSelectedSets([...selectedSets, newSet])
       setCurrentSet('')
@@ -78,6 +78,10 @@ function App() {
 
   const handleRangeChange = (setName: string, range: PriceRange) => {
     setSelectedSets(prev => prev.map(set => set.name === setName ? { ...set, range } : set))
+  }
+
+  const handleProductIdFound = (setName: string, productId: string) => {
+    setSelectedSets(prev => prev.map(set => set.name === setName ? { ...set, productId } : set))
   }
 
   return (
@@ -105,26 +109,40 @@ function App() {
           <>
             <h3>Selected Sets:</h3>
             <div className="set-list">
-              {selectedSets.map(set => (
-                <div key={set} className="set-item">
-                  <span>{set}</span>
-                  <button onClick={() => handleRemoveSet(set)}>Remove</button>
-                </div>
-              ))}
+              {
+                selectedSets.map(storedSet => (
+                  <div key={storedSet.name} className="set-item">
+                    <span>{storedSet.name}</span>
+                    <button onClick={() => handleRemoveSet(storedSet.name)}>Remove</button>
+                  </div>
+                ))
+              }
             </div>
           </>
         )}
       </div>
 
       <div className="charts-container">
-        {selectedSets.map(set => (
+        {
+          selectedSets.map(storedSet => (
+            <PriceChart
+              key={storedSet.name}
+              setName={storedSet.name}
+              range={storedSet.range}
+              productId={storedSet.productId}
+              onRangeChange={(range) => handleRangeChange(storedSet.name, range)}
+              onProductIdFound={(productId) => handleProductIdFound(storedSet.name, productId)}
+            />
+          ))
+        }
+        {/* {selectedSets.map(set => (
           <PriceChart
             key={set}
             setName={set}
             range={setRanges[set] || 'quarter'}
             onRangeChange={(range) => handleRangeChange(set, range)}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   )
