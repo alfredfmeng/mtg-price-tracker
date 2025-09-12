@@ -1,1 +1,0 @@
-{"version":3,"file":"setNameUtils.js","sourceRoot":"","sources":["../../utils/setNameUtils.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,UAAU,gBAAgB,CAAC,OAAe;IACtD,OAAO,OAAO;SACX,WAAW,EAAE;SACb,OAAO,CAAC,IAAI,EAAE,EAAE,CAAC;SACjB,OAAO,CAAC,IAAI,EAAE,EAAE,CAAC;SACjB,OAAO,CAAC,MAAM,EAAE,GAAG,CAAC,CAAC;AAC1B,CAAC"}
